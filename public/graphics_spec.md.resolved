@@ -1,0 +1,355 @@
+# Mask Off: Graphics Asset Specifications
+
+Complete specifications for all graphics assets needed for production.
+
+---
+
+## 📋 Overview
+
+| Category | Count | Status |
+|----------|-------|--------|
+| Character Sprites | 6 types | ⏳ Pending |
+| UI Elements | 6 assets | ⏳ Pending |
+| Visual Effects | 3 sprite sheets | ⏳ Pending |
+| PWA Icons | 3 sizes | ⏳ Pending |
+
+---
+
+## 🎭 Character Sprite Sheets
+
+### General Guidelines
+- **Style**: Satirical cartoon, exaggerated expressions
+- **Format**: PNG with transparency
+- **Arrangement**: Frames laid out horizontally in a single row
+- **Color Palette**: Rich, vibrant colors with good contrast
+
+### Frame Structure (Per Character)
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ IDLE  │ IDLE  │ IDLE  │ IDLE  │ CRACK │ CRACK │ SLIP  │ SLIP  │...
+│  0    │  1    │  2    │  3    │   4   │   5   │  6    │  7    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Character 1: The Preacher
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `preacher.png` |
+| **Frame Size** | 200 × 250 px |
+| **Total Frames** | 12 |
+| **Total Image Size** | 2400 × 250 px |
+
+**Visual Description**:
+- Religious/spiritual leader appearance
+- Wearing robes or formal religious attire
+- Prayer hands pose in idle state
+- Soft halo glow effect around head
+
+**Frame Breakdown**:
+| Frames | State | Animation |
+|--------|-------|-----------|
+| 0-3 | Idle/Masked | Calm breathing, serene smile, hands in prayer |
+| 4-5 | Cracking | Small cracks appearing on face, slight frown |
+| 6-9 | Slip/Reveal | Money eyes 💰, greedy grin, grabbing gesture |
+| 10-11 | Hit Reaction | Shocked expression, falling backward |
+
+---
+
+### Character 2: The Smiler
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `smiler.png` |
+| **Frame Size** | 200 × 250 px |
+| **Total Frames** | 12 |
+| **Total Image Size** | 2400 × 250 px |
+
+**Visual Description**:
+- Corporate/business appearance
+- Perfect suit, perfect hair
+- Overly friendly smile in idle
+- Too-good-to-be-true appearance
+
+**Frame Breakdown**:
+| Frames | State | Animation |
+|--------|-------|-----------|
+| 0-3 | Idle/Masked | Wide smile, waving, thumbs up |
+| 4-5 | Cracking | Smile twitching, eye twitching |
+| 6-9 | Slip/Reveal | Sinister smirk, scheming eyes, rubbing hands |
+| 10-11 | Hit Reaction | Fake smile breaking, grimace |
+
+---
+
+### Character 3: The Shouter
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `shouter.png` |
+| **Frame Size** | 200 × 250 px |
+| **Total Frames** | 12 |
+| **Total Image Size** | 2400 × 250 px |
+
+**Visual Description**:
+- Aggressive media personality
+- Loud colors, exaggerated features
+- Open mouth as if yelling
+- Visual sound waves optional
+
+**Frame Breakdown**:
+| Frames | State | Animation |
+|--------|-------|-----------|
+| 0-3 | Idle/Masked | Shouting "truth," pointing finger, aggressive posture |
+| 4-5 | Cracking | Voice breaking, cracks on face |
+| 6-9 | Slip/Reveal | Cowering expression, true scared face revealed |
+| 10-11 | Hit Reaction | Silenced, hand over mouth |
+
+---
+
+### Character 4: The Vanisher
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `vanisher.png` |
+| **Frame Size** | 200 × 250 px |
+| **Total Frames** | 10 |
+| **Total Image Size** | 2000 × 250 px |
+
+**Visual Description**:
+- Mysterious, shadowy appearance
+- Partial transparency effects
+- Quick, darting movements
+- Wears hood or shadow
+
+**Frame Breakdown**:
+| Frames | State | Animation |
+|--------|-------|-----------|
+| 0-2 | Idle/Masked | Subtle presence, masked face, minimal movement |
+| 3-4 | Cracking | Quick crack, flash of true face |
+| 5-7 | Slip/Reveal | Brief full reveal, panicked eyes |
+| 8-9 | Hit Reaction | Puff of smoke, dissolving |
+
+---
+
+### Character 5: The Puppet
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `puppet.png` |
+| **Frame Size** | 200 × 250 px |
+| **Total Frames** | 12 |
+| **Total Image Size** | 2400 × 250 px |
+
+**Visual Description**:
+- Marionette-like appearance
+- Visible strings going up (off-screen)
+- Jerky, puppet-like movements
+- Wooden texture optional
+
+**Frame Breakdown**:
+| Frames | State | Animation |
+|--------|-------|-----------|
+| 0-3 | Idle/Masked | Being held up by strings, puppet smile |
+| 4-5 | Cracking | Strings loosening, mask dropping |
+| 6-9 | Slip/Reveal | Strings cut, real face visible, strings dangling |
+| 10-11 | Hit Reaction | Collapsing, strings tangling |
+
+---
+
+### Character 6: The Boss
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `boss.png` |
+| **Frame Size** | 250 × 300 px |
+| **Total Frames** | 14 |
+| **Total Image Size** | 3500 × 300 px |
+
+**Visual Description**:
+- Larger, more imposing than regular characters
+- Combines traits of all other characters
+- Crown or power symbols
+- More detailed and intimidating
+
+**Frame Breakdown**:
+| Frames | State | Animation |
+|--------|-------|-----------|
+| 0-3 | Idle/Masked | Powerful stance, glowing aura, confident |
+| 4-6 | Cracking | Major cracks, mask pieces falling |
+| 7-10 | Slip/Reveal | Full villain reveal, all icons visible |
+| 11-13 | Hit/Damage | Taking damage (not defeated), health decreasing |
+
+---
+
+## 🎮 UI Elements
+
+### Hole Sprite
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `hole.png` |
+| **Size** | 180 × 100 px |
+| **Format** | PNG with transparency |
+
+**Description**: Circular/elliptical hole with depth and shadow. Characters pop out from this.
+
+---
+
+### Stamp: CAUGHT!
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `stamp_caught.png` |
+| **Size** | 300 × 150 px |
+| **Format** | PNG with transparency |
+
+**Description**: Bold red stamp with "CAUGHT!" text. Vintage stamp aesthetic with slightly tilted angle.
+
+---
+
+### Stamp: WRONG!
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `stamp_wrong.png` |
+| **Size** | 300 × 150 px |
+| **Format** | PNG with transparency |
+
+**Description**: Gray or muted red stamp with "WRONG!" text. Warning style.
+
+---
+
+### Game Background
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `background.png` |
+| **Size** | 720 × 1280 px |
+| **Format** | PNG or JPG |
+
+**Description**:
+Stage/arena setting with:
+- Dark gradient top (night sky or studio)
+- Stage floor/platform at bottom
+- Subtle audience silhouettes (optional)
+- Moody, satirical atmosphere
+
+---
+
+### Game Logo
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `logo.png` |
+| **Size** | 400 × 200 px |
+| **Format** | PNG with transparency |
+
+**Description**: "MASK OFF" title with dramatic styling:
+- Bold, impactful typography
+- Mask imagery incorporated
+- Subtitle "The Hypocrisy Hunter"
+
+---
+
+### Combo Flames
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `combo_flames.png` |
+| **Frame Size** | 100 × 50 px |
+| **Frames** | 4 |
+| **Format** | PNG sprite sheet |
+
+**Description**: Animated flame effect for combo meter. Orange/red fire animation.
+
+---
+
+## ✨ Visual Effects
+
+### Mask Crack Overlay
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `mask_crack.png` |
+| **Frame Size** | 200 × 250 px |
+| **Frames** | 4 |
+| **Format** | PNG sprite sheet |
+
+**Description**: Semi-transparent cracks that overlay on character face. Progressive cracking animation.
+
+---
+
+### Icon Sprites
+
+| Property | Value |
+|----------|-------|
+| **Filename** | `icons.png` |
+| **Frame Size** | 64 × 64 px |
+| **Frames** | 5 |
+| **Format** | PNG sprite sheet |
+
+**Icons needed**:
+1. 💰 **Coin/Money** - Greed indicator
+2. 👑 **Crown** - Power hunger indicator
+3. 🗳️ **Ballot/Vote** - Political manipulation
+4. 😇 **Halo** - Fake purity
+5. 😈 **Horns** - True evil peeking
+
+---
+
+## 📱 PWA Icons
+
+| Filename | Size | Purpose |
+|----------|------|---------|
+| `favicon.png` | 64 × 64 px | Browser tab icon |
+| `icon-192.png` | 192 × 192 px | Android home screen |
+| `icon-512.png` | 512 × 512 px | App store, splash |
+
+**Design**: Use game logo or recognizable mask symbol. Must look good at small sizes.
+
+---
+
+## 🎨 Color Reference
+
+| Element | Hex | Usage |
+|---------|-----|-------|
+| Primary Red | `#e94560` | Branding, buttons, accents |
+| Dark Background | `#1a1a2e` | Main background |
+| Secondary Dark | `#16213e` | Gradients, depth |
+| Success Green | `#00ff00` | Correct hits, points |
+| Warning Yellow | `#ffd700` | Combos, high scores |
+| Error/Wrong | `#ff4444` | Wrong hits, warnings |
+
+---
+
+## 📁 File Structure
+
+```
+public/assets/sprites/
+├── characters/
+│   ├── preacher.png
+│   ├── smiler.png
+│   ├── shouter.png
+│   ├── vanisher.png
+│   ├── puppet.png
+│   ├── boss.png
+│   └── placeholder.png (for development)
+├── ui/
+│   ├── hole.png
+│   ├── stamp_caught.png
+│   ├── stamp_wrong.png
+│   ├── background.png
+│   ├── logo.png
+│   └── combo_flames.png
+├── fx/
+│   ├── mask_crack.png
+│   └── icons.png
+└── README.md
+
+public/assets/icons/
+├── favicon.png
+├── icon-192.png
+└── icon-512.png
+```
