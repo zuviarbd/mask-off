@@ -100,33 +100,39 @@ export class GameScene extends Phaser.Scene {
     }
     
     createHole(x, y, index) {
-        const holeContainer = this.add.container(x, y);
-        
-        // Hole graphics (placeholder if no texture)
+        // Draw the hole sprite
         let holeSprite;
         if (this.textures.exists('ui_hole')) {
-            holeSprite = this.add.image(0, 0, 'ui_hole');
+            holeSprite = this.add.image(x, y, 'ui_hole');
         } else {
             // Placeholder hole
             const graphics = this.add.graphics();
             graphics.fillStyle(0x111122, 1);
-            graphics.fillEllipse(0, 0, 160, 80);
+            graphics.fillEllipse(x, y, 160, 80);
             graphics.fillStyle(0x0a0a15, 1);
-            graphics.fillEllipse(0, 10, 140, 60);
+            graphics.fillEllipse(x, y + 10, 140, 60);
             holeSprite = graphics;
         }
+        holeSprite.setDepth(1); // Holes are background, characters (depth 10) render on top
         
-        holeContainer.add(holeSprite);
-        
-        // Create mask for character to pop out of
-        const maskShape = this.make.graphics();
+        // Create a mask that allows characters to be visible ABOVE the hole
+        // and clips them at the hole's edge with a curved bottom
+        const maskShape = this.make.graphics({ x: 0, y: 0, add: false });
         maskShape.fillStyle(0xffffff);
-        maskShape.fillRect(x - 100, y - 200, 200, 200);
+        
+        // Main visible area - large rectangle from above the screen down to the hole
+        // Width: 250px (enough for character width with some margin)
+        // Height: starts 500px above hole center
+        maskShape.fillRect(x - 125, y - 500, 250, 500);
+        
+        // Curved bottom extension - positioned to align with hole rim
+        // Ellipse sized to show upper body while clipping at hole edge
+        maskShape.fillEllipse(x, y - 5, 150, 70);
         
         const mask = maskShape.createGeometryMask();
         
         return {
-            container: holeContainer,
+            sprite: holeSprite,
             x,
             y,
             index,
@@ -364,6 +370,7 @@ export class GameScene extends Phaser.Scene {
         if (this.textures.exists(stampKey)) {
             const stamp = this.add.image(character.hole.x, character.hole.y - 50, stampKey);
             stamp.setScale(0);
+            stamp.setDepth(50); // Stamps appear on top of characters
             
             this.tweens.add({
                 targets: stamp,

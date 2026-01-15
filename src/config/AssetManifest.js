@@ -82,7 +82,8 @@ export const ASSET_MANIFEST = {
             path: 'assets/sprites/characters/vanisher.png',
             frameWidth: 200,
             frameHeight: 250,
-            description: 'The Vanisher - 10 frames: idle(3), cracking(2), slip(3), hit(2)'
+            totalFrames: 10,
+            description: 'The Vanisher - 10 frames: idle(3), cracking(2), slip(3), hit(2) [frames 0-9]'
         },
         char_puppet: {
             key: 'char_puppet',
@@ -97,14 +98,6 @@ export const ASSET_MANIFEST = {
             frameWidth: 250,
             frameHeight: 300,
             description: 'The Boss - 14 frames: idle(4), cracking(3), slip(4), hit(3)'
-        },
-        // Placeholder sprite sheet for development
-        char_placeholder: {
-            key: 'char_placeholder',
-            path: 'assets/sprites/characters/placeholder.png',
-            frameWidth: 200,
-            frameHeight: 250,
-            description: 'Placeholder character for development - 12 frames'
         },
         // Visual effect overlays
         fx_mask_crack: {

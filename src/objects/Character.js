@@ -24,20 +24,24 @@ export class Character {
         // Try to use the character sprite, fallback to placeholder
         const spriteKey = this.scene.textures.exists(this.type.spriteKey) 
             ? this.type.spriteKey 
-            : 'char_placeholder';
+            : null;
         
         // If no sprites exist, create a placeholder graphic
-        if (!this.scene.textures.exists(spriteKey)) {
+        if (!spriteKey) {
             this.createPlaceholderSprite();
             return;
         }
         
+        // Position character below the hole (will animate up)
         this.sprite = this.scene.add.sprite(this.hole.x, this.hole.y + 150, spriteKey);
         this.sprite.setScale(0.8);
         this.sprite.setInteractive({ useHandCursor: true });
         this.sprite.on('pointerdown', () => this.onClick());
         
-        // Apply mask so character pops out of hole
+        // Characters render above holes (depth 1) but below stamps (depth 50)
+        this.sprite.setDepth(10);
+        
+        // Apply mask so character is clipped at the hole edge
         if (this.hole.mask) {
             this.sprite.setMask(this.hole.mask);
         }

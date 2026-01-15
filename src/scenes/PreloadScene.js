@@ -126,10 +126,10 @@ export class PreloadScene extends Phaser.Scene {
     
     createAnimations() {
         // Define animations for each character type
-        const characterKeys = ['char_preacher', 'char_smiler', 'char_shouter', 'char_vanisher', 'char_puppet', 'char_boss', 'char_placeholder'];
+        // Standard 12-frame characters
+        const standardCharacters = ['char_preacher', 'char_smiler', 'char_shouter', 'char_puppet'];
         
-        characterKeys.forEach(charKey => {
-            // Skip if texture doesn't exist
+        standardCharacters.forEach(charKey => {
             if (!this.textures.exists(charKey)) return;
             
             // Idle animation (frames 0-3)
@@ -164,5 +164,61 @@ export class PreloadScene extends Phaser.Scene {
                 repeat: 0
             });
         });
+        
+        // Vanisher has 10 frames (0-9): idle(0-2), crack(3-4), slip(5-7), hit(8-9)
+        if (this.textures.exists('char_vanisher')) {
+            this.anims.create({
+                key: 'char_vanisher_idle',
+                frames: this.anims.generateFrameNumbers('char_vanisher', { start: 0, end: 2 }),
+                frameRate: 4,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'char_vanisher_crack',
+                frames: this.anims.generateFrameNumbers('char_vanisher', { start: 3, end: 4 }),
+                frameRate: 8,
+                repeat: 0
+            });
+            this.anims.create({
+                key: 'char_vanisher_slip',
+                frames: this.anims.generateFrameNumbers('char_vanisher', { start: 5, end: 7 }),
+                frameRate: 6,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'char_vanisher_hit',
+                frames: this.anims.generateFrameNumbers('char_vanisher', { start: 8, end: 9 }),
+                frameRate: 10,
+                repeat: 0
+            });
+        }
+        
+        // Boss has 14 frames: idle(0-3), crack(4-6), slip(7-10), hit(11-13)
+        if (this.textures.exists('char_boss')) {
+            this.anims.create({
+                key: 'char_boss_idle',
+                frames: this.anims.generateFrameNumbers('char_boss', { start: 0, end: 3 }),
+                frameRate: 4,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'char_boss_crack',
+                frames: this.anims.generateFrameNumbers('char_boss', { start: 4, end: 6 }),
+                frameRate: 8,
+                repeat: 0
+            });
+            this.anims.create({
+                key: 'char_boss_slip',
+                frames: this.anims.generateFrameNumbers('char_boss', { start: 7, end: 10 }),
+                frameRate: 6,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'char_boss_hit',
+                frames: this.anims.generateFrameNumbers('char_boss', { start: 11, end: 13 }),
+                frameRate: 10,
+                repeat: 0
+            });
+        }
     }
 }
