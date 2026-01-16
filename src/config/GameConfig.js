@@ -46,7 +46,7 @@ export const DIFFICULTY_LEVELS = {
         slipDuration: 400,
         maskDuration: { min: 1000, max: 1200 },
         popupInterval: { min: 800, max: 1500 },
-        maxActiveCharacters: 2,
+        maxActiveCharacters: 3,
         bossInterval: 60000, // 60 seconds
         bossHitsRequired: 2
     },
@@ -56,7 +56,7 @@ export const DIFFICULTY_LEVELS = {
         slipDuration: 300,
         maskDuration: { min: 800, max: 1000 },
         popupInterval: { min: 600, max: 1200 },
-        maxActiveCharacters: 3,
+        maxActiveCharacters: 4,
         bossInterval: 45000,
         bossHitsRequired: 3
     },
@@ -66,7 +66,7 @@ export const DIFFICULTY_LEVELS = {
         slipDuration: 200,
         maskDuration: { min: 600, max: 800 },
         popupInterval: { min: 400, max: 800 },
-        maxActiveCharacters: 4,
+        maxActiveCharacters: 5,
         bossInterval: 30000,
         bossHitsRequired: 4
     }

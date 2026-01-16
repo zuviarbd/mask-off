@@ -193,7 +193,7 @@ export class MainMenuScene extends Phaser.Scene {
     toggleMusic() {
         const current = this.registry.get('musicEnabled');
         this.registry.set('musicEnabled', !current);
-        this.musicBtn.setText(!current ? '🎵' : '🎵');
+        this.musicBtn.setText(!current ? '🎵' : '❌');
         
         if (!current) {
             this.playMenuMusic();
