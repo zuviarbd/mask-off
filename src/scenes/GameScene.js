@@ -127,7 +127,7 @@ export class GameScene extends Phaser.Scene {
         
         // Curved bottom extension - positioned to align with hole rim
         // Ellipse sized to show upper body while clipping at hole edge
-        maskShape.fillEllipse(x, y - 5, 150, 70);
+        maskShape.fillEllipse(x, y - 8, 150, 70);
         
         const mask = maskShape.createGeometryMask();
         

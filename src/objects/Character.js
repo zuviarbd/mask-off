@@ -108,8 +108,8 @@ export class Character {
         // Animate popping up
         this.scene.tweens.add({
             targets: this.sprite,
-            y: this.hole.y - 20,
-            duration: 200,
+            y: this.hole.y - 40,
+            duration: 150,
             ease: 'Back.easeOut',
             onComplete: () => {
                 this.startStateTimer();
