@@ -4,6 +4,7 @@
  */
 import Phaser from 'phaser';
 import { ASSET_MANIFEST } from '../config/AssetManifest.js';
+import { GAME_CONFIG } from '../config/GameConfig.js';
 
 export class PreloadScene extends Phaser.Scene {
     constructor() {
@@ -26,35 +27,44 @@ export class PreloadScene extends Phaser.Scene {
         await document.fonts.load('10pt "Birdman"');
         await document.fonts.load('10pt "CT Galbite"');
     }
-    
+
+   
     createLoadingUI() {
         const { width, height } = this.cameras.main;
         const centerX = width / 2;
         const centerY = height / 2;
         
         // Background
-        this.add.rectangle(centerX, centerY, width, height, 0x1a1a2e);
+        this.createBackground(width, height);
         
         // Title
-        this.add.text(centerX, centerY - 100, 'MASK OFF', {
-            fontFamily: 'Arial Black, Arial',
-            fontSize: '48px',
-            color: '#e94560',
+        this.add.text(centerX, centerY - 100, 'গর্তবাসী', {
+            fontFamily: GAME_CONFIG.FONTS.bangla,
+            fontSize: '64px',
+            color: '#ffff00ff',
             stroke: '#000000',
+            padding: {
+                x: 10,
+                y: 10
+            },
             strokeThickness: 4
         }).setOrigin(0.5);
-        
+
         // Subtitle
-        this.add.text(centerX, centerY - 50, 'The Hypocrisy Hunter', {
-            fontFamily: 'Arial',
-            fontSize: '20px',
-            color: '#ffffff'
+        this.add.text(centerX, centerY - 40, 'গর্তবাসী তারা - গর্তে হবে সারা!', {
+            fontFamily: GAME_CONFIG.FONTS.bangla,
+            fontSize: '40px',
+            color: '#114e19ff',
+            padding: {
+                x: 10,
+                y: 10
+            },
         }).setOrigin(0.5);
         
         // Progress bar background
         const barWidth = 400;
         const barHeight = 30;
-        this.add.rectangle(centerX, centerY + 50, barWidth + 4, barHeight + 4, 0x333333);
+        this.add.rectangle(centerX, centerY + 50, barWidth + 4, barHeight + 4, 0x000000);
         
         // Progress bar fill
         this.progressBar = this.add.rectangle(
@@ -62,16 +72,16 @@ export class PreloadScene extends Phaser.Scene {
             centerY + 50,
             0,
             barHeight,
-            0xe94560
+            0xffff00
         ).setOrigin(0, 0.5);
         
         this.progressBarWidth = barWidth;
         
         // Loading text
         this.loadingText = this.add.text(centerX, centerY + 100, 'Loading... 0%', {
-            fontFamily: 'Arial',
-            fontSize: '18px',
-            color: '#aaaaaa'
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '22px',
+            color: '#000000ff'
         }).setOrigin(0.5);
     }
     
@@ -231,4 +241,15 @@ export class PreloadScene extends Phaser.Scene {
             });
         }
     }
+
+    createBackground(width, height) {
+        const graphics = this.add.graphics();
+        graphics.fillGradientStyle(
+            0xC3E3C0, 0xC3E3C0,
+            0x74C47A, 0x74C47A,
+            1
+        );
+        graphics.fillRect(0, 0, width, height);
+    }
+    
 }
