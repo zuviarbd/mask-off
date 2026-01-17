@@ -12,20 +12,37 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
-        // Create loading UI
-        this.createLoadingUI();
+        const { width, height } = this.cameras.main;
         
-        // Register load events
-        this.load.on('progress', this.updateProgress, this);
-        this.load.on('complete', this.loadComplete, this);
+        // Create background first
+        this.createBackground(width, height);
         
-        // Load all assets from manifest
-        this.loadAssets();
-    }
-
-    async loadFonts() {
-        await document.fonts.load('10pt "Birdman"');
-        await document.fonts.load('10pt "CT Galbite"');
+        // Show simple loading text while fonts load
+        this.simpleLoadingText = this.add.text(width / 2, height / 2, 'Loading...', {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#000000'
+        }).setOrigin(0.5);
+        
+        // Wait for fonts with a timeout, then continue loading
+        Promise.race([
+            document.fonts.ready,
+            new Promise(resolve => setTimeout(resolve, 2000)) // 2 second timeout
+        ]).then(() => {
+            // Fonts ready (or timeout) - now create proper UI
+            this.simpleLoadingText.destroy();
+            this.createLoadingUI();
+            
+            // Register load events
+            this.load.on('progress', this.updateProgress, this);
+            this.load.on('complete', this.loadComplete, this);
+            
+            // Load all assets
+            this.loadAssets();
+            
+            // Start the loader
+            this.load.start();
+        });
     }
 
    
@@ -91,16 +108,11 @@ export class PreloadScene extends Phaser.Scene {
     }
     
     loadComplete() {
-        this.loadingText.setText('Loading Fonts...');
+        this.loadingText.setText('Ready!');
         
-        // Wait for fonts to load before transitioning
-        this.loadFonts().then(() => {
-            this.loadingText.setText('Ready!');
-            
-            // Small delay before transitioning
-            this.time.delayedCall(500, () => {
-                this.scene.start('MainMenuScene');
-            });
+        // Small delay before transitioning
+        this.time.delayedCall(500, () => {
+            this.scene.start('MainMenuScene');
         });
     }
     

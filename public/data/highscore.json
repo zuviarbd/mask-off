@@ -1,0 +1,6 @@
+{
+  "globalHighScore": 1280,
+  "achievedBy": "Anonymous",
+  "achievedAt": null,
+  "description": "This file stores the global high score across all players. Update manually or via server-side logic."
+}

@@ -29,16 +29,29 @@ export class MainMenuScene extends Phaser.Scene {
         }
         
         // High Score display
-        this.add.text(centerX, 200, `- HIGH SCORE -`, {
+        this.add.text(centerX, 200, `- YOUR HIGH SCORE -`, {
             fontFamily: GAME_CONFIG.FONTS.primary,
-            fontSize: '20px',
+            fontSize: '18px',
             color: '#ffffff'
         }).setOrigin(0.5);
         const highScore = this.registry.get('highScore') || 0;
-        this.add.text(centerX, 240, `${highScore}`, {
+        this.add.text(centerX, 235, `${highScore}`, {
             fontFamily: GAME_CONFIG.FONTS.numbers,
-            fontSize: '50px',
+            fontSize: '42px',
             color: '#ffff00'
+        }).setOrigin(0.5);
+        
+        // Global High Score display
+        const globalHighScore = this.registry.get('globalHighScore') || 0;
+        this.add.text(centerX, 290, `- GLOBAL RECORD -`, {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '16px',
+            color: '#dedede'
+        }).setOrigin(0.5);
+        this.add.text(centerX, 320, `${globalHighScore}`, {
+            fontFamily: GAME_CONFIG.FONTS.numbers,
+            fontSize: '36px',
+            color: '#00ffff'
         }).setOrigin(0.5);
 
         

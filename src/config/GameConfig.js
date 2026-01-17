@@ -48,7 +48,7 @@ export const GAME_CONFIG = {
         primary: 'Birdman',
         numbers: 'CT Galbite',
         secondary: 'Arial',
-        bangla: 'Li Abu J M Akkas Unicode'
+        bangla: 'Li Abu J M Akkas'
     }
 };
 
