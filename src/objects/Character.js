@@ -135,13 +135,11 @@ export class Character {
     }
     
     showSlipState() {
-        // Show slip animation if available
+        // Show slip animation
         if (this.scene.anims.exists(`${this.type.spriteKey}_slip`)) {
             this.sprite.play(`${this.type.spriteKey}_slip`);
-        } else {
-            // Visual indicator for slip state - tint red
-            this.sprite.setTint(0xff6666);
         }
+        // No fallback tint - animations should exist for all characters
     }
     
     startSlipTimer() {

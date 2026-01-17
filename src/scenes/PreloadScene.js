@@ -17,7 +17,12 @@ export class PreloadScene extends Phaser.Scene {
         // Create background first
         this.createBackground(width, height);
         
-        // Show simple loading text while fonts load
+        // Trigger font loading explicitly
+        document.fonts.load('10pt "Birdman"');
+        document.fonts.load('10pt "CT Galbite"');
+        document.fonts.load('10pt "Li Abu J M Akkas"');
+        
+        // Show simple loading text while fonts load (uses system font)
         this.simpleLoadingText = this.add.text(width / 2, height / 2, 'Loading...', {
             fontFamily: 'Arial',
             fontSize: '24px',
@@ -27,7 +32,7 @@ export class PreloadScene extends Phaser.Scene {
         // Wait for fonts with a timeout, then continue loading
         Promise.race([
             document.fonts.ready,
-            new Promise(resolve => setTimeout(resolve, 2000)) // 2 second timeout
+            new Promise(resolve => setTimeout(resolve, 3000)) // 3 second timeout
         ]).then(() => {
             // Fonts ready (or timeout) - now create proper UI
             this.simpleLoadingText.destroy();
@@ -109,6 +114,9 @@ export class PreloadScene extends Phaser.Scene {
     
     loadComplete() {
         this.loadingText.setText('Ready!');
+        
+        // Create animations BEFORE transitioning (create() won't run after scene.start)
+        this.createAnimations();
         
         // Small delay before transitioning
         this.time.delayedCall(500, () => {
