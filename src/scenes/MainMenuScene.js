@@ -3,7 +3,7 @@
  * Title screen with difficulty selection and settings
  */
 import Phaser from 'phaser';
-import { DIFFICULTY_LEVELS } from '../config/GameConfig.js';
+import { DIFFICULTY_LEVELS, GAME_CONFIG } from '../config/GameConfig.js';
 
 export class MainMenuScene extends Phaser.Scene {
     constructor() {
@@ -23,30 +23,51 @@ export class MainMenuScene extends Phaser.Scene {
         
         // Logo or Title
         if (this.textures.exists('ui_logo')) {
-            this.add.image(centerX, 200, 'ui_logo');
+            this.add.image(centerX, 680, 'ui_logo');
         } else {
             this.createPlaceholderTitle(centerX);
         }
         
         // High Score display
-        const highScore = this.registry.get('highScore') || 0;
-        this.add.text(centerX, 350, `High Score: ${highScore}`, {
-            fontFamily: 'Arial',
-            fontSize: '24px',
+        this.add.text(centerX, 200, `- HIGH SCORE -`, {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '20px',
             color: '#ffffff'
         }).setOrigin(0.5);
+        const highScore = this.registry.get('highScore') || 0;
+        this.add.text(centerX, 240, `${highScore}`, {
+            fontFamily: GAME_CONFIG.FONTS.numbers,
+            fontSize: '50px',
+            color: '#ffff00'
+        }).setOrigin(0.5);
+
         
         // Difficulty buttons
-        this.createDifficultyButtons(centerX, 480);
+        this.createDifficultyButtons(centerX, 940);
         
         // Settings buttons (sound/music toggles)
-        this.createSettingsButtons(centerX, height - 150);
+        this.createSettingsButtons(centerX, height - 100);
         
         // Instructions
-        this.add.text(centerX, height - 50, 'Tap the hypocrites when their mask slips!', {
-            fontFamily: 'Arial',
-            fontSize: '16px',
-            color: '#888888'
+        // Tap the hypocrites when their face changes!
+        this.add.text(centerX, 820, 'মুনাফিকের আসল চেহারা দেখামাত্র', {
+            fontFamily: GAME_CONFIG.FONTS.bangla,
+            fontSize: '28px',
+            color: '#fbff00ff',
+            stroke: '#000000',
+            strokeThickness: 6,
+            padding: { top: 8, bottom: 8 },
+            align: 'center'
+        }).setOrigin(0.5);
+
+        this.add.text(centerX, 860, 'টাচ করে গর্তে ঢুকান!', {
+            fontFamily: GAME_CONFIG.FONTS.bangla,
+            fontSize: '28px',
+            color: '#fbff00ff',
+            stroke: '#000000',
+            strokeThickness: 6,
+            padding: { top: 8, bottom: 8 },
+            align: 'center'
         }).setOrigin(0.5);
         
         // Play menu music
@@ -72,7 +93,7 @@ export class MainMenuScene extends Phaser.Scene {
     createPlaceholderTitle(centerX) {
         // Main title
         const title = this.add.text(centerX, 150, 'MASK OFF', {
-            fontFamily: 'Arial Black, Arial',
+            fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '64px',
             color: '#e94560',
             stroke: '#000000',
@@ -81,7 +102,7 @@ export class MainMenuScene extends Phaser.Scene {
         
         // Subtitle
         this.add.text(centerX, 230, 'The Hypocrisy Hunter', {
-            fontFamily: 'Arial',
+            fontFamily: GAME_CONFIG.FONTS.secondary,
             fontSize: '28px',
             color: '#ffffff',
             fontStyle: 'italic'
@@ -117,10 +138,10 @@ export class MainMenuScene extends Phaser.Scene {
     
     createButton(x, y, text, callback) {
         // Button background
-        const button = this.add.rectangle(x, y, 300, 60, 0xe94560)
+        const button = this.add.rectangle(x, y, 300, 60, 0x003F15)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
-                button.setFillStyle(0xff6b85);
+                button.setFillStyle(0x084C08);
                 this.tweens.add({
                     targets: button,
                     scaleX: 1.05,
@@ -129,7 +150,7 @@ export class MainMenuScene extends Phaser.Scene {
                 });
             })
             .on('pointerout', () => {
-                button.setFillStyle(0xe94560);
+                button.setFillStyle(0x003F15);
                 this.tweens.add({
                     targets: button,
                     scaleX: 1,
@@ -144,7 +165,7 @@ export class MainMenuScene extends Phaser.Scene {
         
         // Button text
         this.add.text(x, y, text, {
-            fontFamily: 'Arial Black, Arial',
+            fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '24px',
             color: '#ffffff'
         }).setOrigin(0.5);

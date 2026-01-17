@@ -3,7 +3,7 @@
  * Display results, ratings, and share functionality
  */
 import Phaser from 'phaser';
-import { RATINGS } from '../config/GameConfig.js';
+import { RATINGS, GAME_CONFIG } from '../config/GameConfig.js';
 
 export class GameOverScene extends Phaser.Scene {
     constructor() {
@@ -31,37 +31,42 @@ export class GameOverScene extends Phaser.Scene {
         this.createBackground(width, height);
         
         // Title
-        this.add.text(centerX, 100, this.isNewHighScore ? '🎉 NEW HIGH SCORE! 🎉' : 'GAME OVER', {
-            fontFamily: 'Arial Black, Arial',
+        this.add.text(centerX, 100, this.isNewHighScore ? '🎉 NEW HIGH SCORE! 🎉' : 'GAME OVER!', {
+            fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: this.isNewHighScore ? '36px' : '48px',
-            color: this.isNewHighScore ? '#ffd700' : '#e94560',
-            stroke: '#000000',
+            color: this.isNewHighScore ? '#ffd700' : '#FFFF00',
+            stroke: '#003F15',
             strokeThickness: 4
         }).setOrigin(0.5);
-        
         // Score
-        this.add.text(centerX, 180, `Score: ${this.finalScore}`, {
-            fontFamily: 'Arial Black, Arial',
-            fontSize: '42px',
-            color: '#ffffff'
+        this.add.text(centerX, 180, `YOUR SCORE`, {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '36px',
+            color: '#000000ff'
+        }).setOrigin(0.5);
+        this.add.text(centerX, 230, `${this.finalScore}`, {
+            fontFamily: GAME_CONFIG.FONTS.numbers,
+            fontSize: '60px',
+            color: '#ff0000ff'
         }).setOrigin(0.5);
         
         // Rating
         const rating = this.getRating();
-        this.createRatingDisplay(centerX, 280, rating);
+        this.createRatingDisplay(centerX, 400, rating);
         
         // Stats breakdown
-        this.createStatsBreakdown(centerX, 450);
+        this.createStatsBreakdown(centerX, 600);
         
         // Buttons
-        this.createButtons(centerX, height - 200);
+        this.createButtons(centerX, height - 400);
         
         // Fact mode disclaimer
-        this.add.text(centerX, height - 50, '"Always verify before believing."', {
-            fontFamily: 'Arial',
-            fontSize: '16px',
-            color: '#888888',
-            fontStyle: 'italic'
+        this.add.text(centerX, height - 50, '"বিশ্বাস করার আগে যাচাই করুন।"', {
+            fontFamily: GAME_CONFIG.FONTS.bangla,
+            fontSize: '28px',
+            color: '#003F15ff',
+            fontStyle: 'italic',
+            padding: { top: 8, bottom: 8 },
         }).setOrigin(0.5);
         
         // Play victory music if high score
@@ -72,7 +77,11 @@ export class GameOverScene extends Phaser.Scene {
     
     createBackground(width, height) {
         const graphics = this.add.graphics();
-        graphics.fillGradientStyle(0x1a1a2e, 0x1a1a2e, 0x16213e, 0x16213e, 1);
+        graphics.fillGradientStyle(
+            0xC3E3C0, 0xC3E3C0,
+            0x74C47A, 0x74C47A,
+            1
+        );
         graphics.fillRect(0, 0, width, height);
     }
     
@@ -94,16 +103,18 @@ export class GameOverScene extends Phaser.Scene {
         // Rating container with animation
         const container = this.add.container(x, y);
         
-        // Emoji
+        // Emoji - padding prevents clipping
         const emoji = this.add.text(0, -30, rating.emoji, {
-            fontSize: '64px'
+            fontSize: '50px',
+            padding: { top: 10, bottom: 10 },
         }).setOrigin(0.5);
         
-        // Rating name
+        // Rating name - padding prevents Bangla font clipping
         const name = this.add.text(0, 40, rating.name, {
-            fontFamily: 'Arial Black, Arial',
+            fontFamily: GAME_CONFIG.FONTS.bangla,
             fontSize: '32px',
-            color: rating.color
+            color: rating.color,
+            padding: { top: 8, bottom: 8 },
         }).setOrigin(0.5);
         
         container.add([emoji, name]);
@@ -131,10 +142,10 @@ export class GameOverScene extends Phaser.Scene {
     
     createStatsBreakdown(x, y) {
         const stats = [
-            { label: 'Frauds Exposed', value: this.correctHits },
-            { label: 'Sentiment Traps Hit', value: this.wrongHits },
+            { label: 'Chagu Exposed', value: this.correctHits },
+            { label: 'Wrong Hit', value: this.wrongHits },
             { label: 'Best Combo', value: this.maxCombo },
-            { label: 'Bosses Defeated', value: this.bossesDefeated },
+            { label: 'Boss Defeated', value: this.bossesDefeated },
             { label: 'Accuracy', value: `${Math.round(this.accuracy * 100)}%` }
         ];
         
@@ -146,16 +157,16 @@ export class GameOverScene extends Phaser.Scene {
             
             // Label
             this.add.text(x - 150, statY, stat.label, {
-                fontFamily: 'Arial',
+                fontFamily: GAME_CONFIG.FONTS.primary,
                 fontSize: '20px',
-                color: '#aaaaaa'
+                color: '#0f380fff'
             }).setOrigin(0, 0.5);
             
             // Value
             this.add.text(x + 150, statY, stat.value.toString(), {
-                fontFamily: 'Arial Black, Arial',
-                fontSize: '24px',
-                color: '#ffffff'
+                fontFamily: GAME_CONFIG.FONTS.numbers,
+                fontSize: '28px',
+                color: '#0f380fff'
             }).setOrigin(1, 0.5);
         });
     }
@@ -180,13 +191,13 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     createButton(x, y, text, callback) {
-        const button = this.add.rectangle(x, y, 280, 50, 0xe94560)
+        const button = this.add.rectangle(x, y, 280, 50, 0x003F15)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
-                button.setFillStyle(0xff6b85);
+                button.setFillStyle(0x084C08);
             })
             .on('pointerout', () => {
-                button.setFillStyle(0xe94560);
+                button.setFillStyle(0x003F15);
             })
             .on('pointerdown', () => {
                 this.playButtonSound();
@@ -194,7 +205,7 @@ export class GameOverScene extends Phaser.Scene {
             });
         
         this.add.text(x, y, text, {
-            fontFamily: 'Arial',
+            fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '20px',
             color: '#ffffff'
         }).setOrigin(0.5);

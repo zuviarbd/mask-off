@@ -21,6 +21,11 @@ export class PreloadScene extends Phaser.Scene {
         // Load all assets from manifest
         this.loadAssets();
     }
+
+    async loadFonts() {
+        await document.fonts.load('10pt "Birdman"');
+        await document.fonts.load('10pt "CT Galbite"');
+    }
     
     createLoadingUI() {
         const { width, height } = this.cameras.main;
@@ -76,11 +81,16 @@ export class PreloadScene extends Phaser.Scene {
     }
     
     loadComplete() {
-        this.loadingText.setText('Ready!');
+        this.loadingText.setText('Loading Fonts...');
         
-        // Small delay before transitioning
-        this.time.delayedCall(500, () => {
-            this.scene.start('MainMenuScene');
+        // Wait for fonts to load before transitioning
+        this.loadFonts().then(() => {
+            this.loadingText.setText('Ready!');
+            
+            // Small delay before transitioning
+            this.time.delayedCall(500, () => {
+                this.scene.start('MainMenuScene');
+            });
         });
     }
     

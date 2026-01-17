@@ -5,7 +5,7 @@
 
 export const GAME_CONFIG = {
     // Game duration in seconds per round
-    roundDuration: 60,
+    roundDuration: 1,
     
     // Grid configuration
     grid: {
@@ -36,6 +36,14 @@ export const GAME_CONFIG = {
         penaltyDuration: 3000, // ms
         slipReduction: 0.5, // Reduce slip chance by 50%
         maskDurationIncrease: 1.5 // Increase mask duration by 50%
+    },
+    
+    // Fonts
+    FONTS: {
+        primary: 'Birdman',
+        numbers: 'CT Galbite',
+        secondary: 'Arial',
+        bangla: 'Li Abu J M Akkas Unicode'
     }
 };
 
@@ -47,14 +55,14 @@ export const DIFFICULTY_LEVELS = {
         maskDuration: { min: 1000, max: 1200 },
         popupInterval: { min: 800, max: 1500 },
         maxActiveCharacters: 3,
-        bossInterval: 60000, // 60 seconds
+        bossInterval: 50000, // 60 seconds
         bossHitsRequired: 2
     },
     normal: {
         name: 'Normal',
         slipChance: 0.6,
-        slipDuration: 300,
-        maskDuration: { min: 800, max: 1000 },
+        slipDuration: 350,
+        maskDuration: { min: 900, max: 1100 },
         popupInterval: { min: 600, max: 1200 },
         maxActiveCharacters: 4,
         bossInterval: 45000,
@@ -62,12 +70,12 @@ export const DIFFICULTY_LEVELS = {
     },
     hard: {
         name: 'Hard',
-        slipChance: 0.4,
-        slipDuration: 200,
-        maskDuration: { min: 600, max: 800 },
-        popupInterval: { min: 400, max: 800 },
+        slipChance: 0.5,
+        slipDuration: 250,
+        maskDuration: { min: 700, max: 900 },
+        popupInterval: { min: 500, max: 1000 },
         maxActiveCharacters: 5,
-        bossInterval: 30000,
+        bossInterval: 35000,
         bossHitsRequired: 4
     }
 };
@@ -142,34 +150,36 @@ export const CHARACTER_TYPES = {
 export const RATINGS = {
     blindBeliever: {
         id: 'blind_believer',
-        name: 'Blind Believer',
+        name: 'মুখোশ উন্মোচক',
         emoji: '😴',
         minAccuracy: 0,
         maxAccuracy: 0.3,
-        color: '#888888'
+        color: '#295242ff'
     },
     curious: {
         id: 'curious',
-        name: 'Curious',
+        name: 'মুনাফিক হান্টার',
         emoji: '👀',
         minAccuracy: 0.3,
         maxAccuracy: 0.5,
-        color: '#4a90d9'
+        color: '#007afdff'
     },
     criticalThinker: {
         id: 'critical_thinker',
-        name: 'Critical Thinker',
+        name: 'মগবাজারের যম',
         emoji: '🧠',
         minAccuracy: 0.5,
         maxAccuracy: 0.75,
-        color: '#7b68ee'
+        color: '#5849adff'
     },
     hypocrisyHunter: {
         id: 'hypocrisy_hunter',
-        name: 'Hypocrisy Hunter',
+        name: 'ছাগুশিকারী প্রো ম্যাক্স',
         emoji: '🎯',
         minAccuracy: 0.75,
         maxAccuracy: 1.0,
-        color: '#e94560'
+        color: '#e2193bff'
     }
 };
+
+['ছাগুশিকারী', 'গর্তা', 'অপরোধী', 'গর্তযোদ্ধা']

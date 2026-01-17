@@ -16,53 +16,60 @@ export class HUD {
     create() {
         const { width } = this.scene.cameras.main;
         
-        // Top bar background
-        this.elements.topBar = this.scene.add.rectangle(width / 2, 60, width, 120, 0x000000, 0.5);
-        
-        // Score display
-        this.elements.scoreLabel = this.scene.add.text(width / 2, 40, 'SCORE', {
-            fontFamily: 'Arial',
-            fontSize: '14px',
-            color: '#888888'
+        const hudY = 230;
+        const spacing = 150;
+
+        // Semi-transparent rounded background
+        this.elements.scoreboardBg = this.scene.add.graphics();
+        this.elements.scoreboardBg.fillStyle(0x000000, 0.5);
+        this.elements.scoreboardBg.fillRoundedRect(width / 2 - 250, hudY - 60, 500, 120, 20);
+
+        // Score display (Center)
+        this.elements.scoreLabel = this.scene.add.text(width / 2, hudY - 30, 'SCORE', {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '20px',
+            color: '#a8a8a8ff'
         }).setOrigin(0.5);
         
-        this.elements.scoreText = this.scene.add.text(width / 2, 70, '0', {
-            fontFamily: 'Arial Black, Arial',
-            fontSize: '36px',
+        this.elements.scoreText = this.scene.add.text(width / 2, hudY + 10, '0', {
+            fontFamily: GAME_CONFIG.FONTS.numbers,
+            fontSize: '42px',
             color: '#ffffff'
         }).setOrigin(0.5);
         
-        // Timer display
-        this.elements.timerIcon = this.scene.add.text(width - 80, 35, '⏱️', {
-            fontSize: '24px'
+        // Timer display (Right)
+        this.elements.timerIcon = this.scene.add.text(width / 2 + spacing, hudY - 20, 'TIME', {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '16px',
+            color: '#a8a8a8ff'
         }).setOrigin(0.5);
         
-        this.elements.timerText = this.scene.add.text(width - 80, 70, GAME_CONFIG.roundDuration.toString(), {
-            fontFamily: 'Arial Black, Arial',
-            fontSize: '28px',
-            color: '#ffffff'
+        this.elements.timerText = this.scene.add.text(width / 2 + spacing, hudY + 10, GAME_CONFIG.roundDuration.toString(), {
+            fontFamily: GAME_CONFIG.FONTS.numbers,
+            fontSize: '32px',
+            color: '#ff0000ff'
         }).setOrigin(0.5);
         
-        // Combo meter
-        this.elements.comboContainer = this.scene.add.container(80, 55);
+        // Combo meter (Left)
+        this.elements.comboContainer = this.scene.add.container(width / 2 - spacing, hudY);
         
-        this.elements.comboLabel = this.scene.add.text(0, -15, 'COMBO', {
-            fontFamily: 'Arial',
-            fontSize: '12px',
+        this.elements.comboLabel = this.scene.add.text(0, -20, 'COMBO', {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '16px',
             color: '#888888'
         }).setOrigin(0.5);
         
-        this.elements.comboText = this.scene.add.text(0, 15, '0', {
-            fontFamily: 'Arial Black, Arial',
-            fontSize: '28px',
-            color: '#e94560'
+        this.elements.comboText = this.scene.add.text(0, 10, '0', {
+            fontFamily: GAME_CONFIG.FONTS.numbers,
+            fontSize: '32px',
+            color: '#25c562ff'
         }).setOrigin(0.5);
         
         this.elements.comboContainer.add([this.elements.comboLabel, this.elements.comboText]);
         
         // Multiplier display (shows when combo > 0)
-        this.elements.multiplierText = this.scene.add.text(80, 95, '', {
-            fontFamily: 'Arial',
+        this.elements.multiplierText = this.scene.add.text(width / 2 - spacing, hudY + 40, '', {
+            fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '16px',
             color: '#ffd700'
         }).setOrigin(0.5).setAlpha(0);
@@ -72,7 +79,7 @@ export class HUD {
         
         const warningBg = this.scene.add.rectangle(0, 0, 300, 40, 0xff0000, 0.8);
         const warningText = this.scene.add.text(0, 0, '⚠️ BLIND FAITH MODE ⚠️', {
-            fontFamily: 'Arial Black, Arial',
+            fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '18px',
             color: '#ffffff'
         }).setOrigin(0.5);
