@@ -150,7 +150,7 @@ export const CHARACTER_TYPES = {
 export const RATINGS = {
     blindBeliever: {
         id: 'blind_believer',
-        name: 'মুখোশ উন্মোচক',
+        name: 'মুখোশ উন্মোচক!',
         emoji: '😴',
         minAccuracy: 0,
         maxAccuracy: 0.3,
@@ -158,7 +158,7 @@ export const RATINGS = {
     },
     curious: {
         id: 'curious',
-        name: 'মুনাফিক হান্টার',
+        name: 'মুনাফিক হান্টার!',
         emoji: '👀',
         minAccuracy: 0.3,
         maxAccuracy: 0.5,
@@ -166,7 +166,7 @@ export const RATINGS = {
     },
     criticalThinker: {
         id: 'critical_thinker',
-        name: 'মগবাজারের যম',
+        name: 'মগবাজারের যম!',
         emoji: '🧠',
         minAccuracy: 0.5,
         maxAccuracy: 0.75,
@@ -174,7 +174,7 @@ export const RATINGS = {
     },
     hypocrisyHunter: {
         id: 'hypocrisy_hunter',
-        name: 'ছাগুশিকারী প্রো ম্যাক্স',
+        name: 'ছাগুশিকারী প্রো ম্যাক্স!',
         emoji: '🎯',
         minAccuracy: 0.75,
         maxAccuracy: 1.0,

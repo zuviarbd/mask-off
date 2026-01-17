@@ -179,36 +179,42 @@ export const ASSET_MANIFEST = {
             description: 'Disapproving murmur (1.5s)'
         },
         
-        // Voice lines (excuses when caught)
-        voice_excuse_1: {
-            key: 'voice_excuse_1',
-            path: 'assets/audio/voice/excuse_conspiracy.mp3',
+        // Voice lines (character-specific excuses when caught)
+        voice_preacher: {
+            key: 'voice_preacher',
+            path: 'assets/audio/voice/excuse_preacher.mp3',
             text: "It's a conspiracy!",
-            description: 'Excuse voice line 1 (1.5s)'
+            description: 'The Preacher excuse voice line'
         },
-        voice_excuse_2: {
-            key: 'voice_excuse_2',
-            path: 'assets/audio/voice/excuse_misunderstood.mp3',
+        voice_smiler: {
+            key: 'voice_smiler',
+            path: 'assets/audio/voice/excuse_smiler.mp3',
             text: "You misunderstood me!",
-            description: 'Excuse voice line 2 (1.5s)'
+            description: 'The Smiler excuse voice line'
         },
-        voice_excuse_3: {
-            key: 'voice_excuse_3',
-            path: 'assets/audio/voice/excuse_context.mp3',
+        voice_shouter: {
+            key: 'voice_shouter',
+            path: 'assets/audio/voice/excuse_shouter.mp3',
             text: "This is out of context!",
-            description: 'Excuse voice line 3 (1.5s)'
+            description: 'The Shouter excuse voice line'
         },
-        voice_excuse_4: {
-            key: 'voice_excuse_4',
-            path: 'assets/audio/voice/excuse_never_said.mp3',
+        voice_vanisher: {
+            key: 'voice_vanisher',
+            path: 'assets/audio/voice/excuse_vanisher.mp3',
             text: "I never said that!",
-            description: 'Excuse voice line 4 (1.2s)'
+            description: 'The Vanisher excuse voice line'
         },
-        voice_excuse_5: {
-            key: 'voice_excuse_5',
-            path: 'assets/audio/voice/excuse_fake_news.mp3',
+        voice_puppet: {
+            key: 'voice_puppet',
+            path: 'assets/audio/voice/excuse_puppet.mp3',
+            text: "I was just following orders!",
+            description: 'The Puppet excuse voice line'
+        },
+        voice_boss: {
+            key: 'voice_boss',
+            path: 'assets/audio/voice/excuse_boss.mp3',
             text: "Fake news!",
-            description: 'Excuse voice line 5 (0.8s)'
+            description: 'The Boss excuse voice line'
         },
         
         // Music
@@ -240,7 +246,17 @@ export function getAssetKeys(type) {
 }
 
 /**
- * Get voice line keys for random selection
+ * Get voice line key for a specific character type
+ * @param {string} characterTypeId - The character type id (e.g., 'preacher', 'smiler')
+ * @returns {string|null} The voice line key or null if not found
+ */
+export function getVoiceLineKey(characterTypeId) {
+    const voiceKey = `voice_${characterTypeId}`;
+    return ASSET_MANIFEST.audio[voiceKey]?.key || null;
+}
+
+/**
+ * Get all voice line keys (for preloading)
  */
 export function getVoiceLineKeys() {
     return Object.keys(ASSET_MANIFEST.audio)

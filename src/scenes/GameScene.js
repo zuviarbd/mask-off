@@ -312,7 +312,7 @@ export class GameScene extends Phaser.Scene {
         // Visual and audio feedback
         this.showHitFeedback(character, true, points);
         this.playSound('sfx_hit_correct');
-        this.playRandomExcuse();
+        this.playCharacterExcuse(character);
         
         // Update HUD
         this.hud.updateScore(this.score);
@@ -419,14 +419,14 @@ export class GameScene extends Phaser.Scene {
         }
     }
     
-    playRandomExcuse() {
+    playCharacterExcuse(character) {
         if (!this.registry.get('soundEnabled')) return;
         
-        const excuses = ['voice_excuse_1', 'voice_excuse_2', 'voice_excuse_3', 'voice_excuse_4', 'voice_excuse_5'];
-        const excuse = Phaser.Utils.Array.GetRandom(excuses);
+        // Play the character-specific voice line
+        const voiceKey = `voice_${character.type.id}`;
         
-        if (this.cache.audio.exists(excuse)) {
-            this.sound.play(excuse, { volume: 0.7 });
+        if (this.cache.audio.exists(voiceKey)) {
+            this.sound.play(voiceKey, { volume: 0.7 });
         }
     }
     
