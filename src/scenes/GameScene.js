@@ -208,17 +208,22 @@ export class GameScene extends Phaser.Scene {
         const activeCount = this.characters.filter(c => c.isActive).length;
         if (activeCount >= this.difficulty.maxActiveCharacters && !forceBoss) return;
         
+        // Double-check hole is actually available (fix occupation bug)
+        const availableHoles2 = this.holes.filter(h => !h.isOccupied && !h.character);
+        
+        if (availableHoles2.length === 0) return;
+        
         // Pick random hole (center bias for normal chars)
         let hole;
         if (forceBoss) {
             // Boss always in center
-            hole = availableHoles.find(h => h.index === 4) || availableHoles[0];
+            hole = availableHoles2.find(h => h.index === 4) || availableHoles2[0];
         } else {
             // 30% chance for center hole
-            if (availableHoles.find(h => h.index === 4) && Math.random() < 0.3) {
-                hole = availableHoles.find(h => h.index === 4);
+            if (availableHoles2.find(h => h.index === 4) && Math.random() < 0.3) {
+                hole = availableHoles2.find(h => h.index === 4);
             } else {
-                hole = Phaser.Utils.Array.GetRandom(availableHoles);
+                hole = Phaser.Utils.Array.GetRandom(availableHoles2);
             }
         }
         
@@ -243,6 +248,16 @@ export class GameScene extends Phaser.Scene {
         }
         
         character.willSlip = willSlip;
+        
+        // Determine if character starts unmasked (40% chance for non-boss, non-puppet)
+        if (!charType.isBoss && !charType.requiresTrigger) {
+            const startsUnmasked = Math.random() < GAME_CONFIG.spawnBehavior.unmaskedSpawnChance;
+            if (startsUnmasked) {
+                character.startedUnmasked = true;
+                character.willSlip = true; // Always can be hit if starting unmasked
+            }
+        }
+        
         character.spawn();
         
         this.characters.push(character);
@@ -270,9 +285,15 @@ export class GameScene extends Phaser.Scene {
     onCharacterClicked(character) {
         if (this.isPaused || !character.isActive) return;
         
-        const isSlipping = character.currentState === 'slip';
+        // Valid hit states:
+        // - 'cracking' (mask breaking)
+        // - 'slip' (fully unmasked)
+        // - 'leaving' if character had unmasked (willSlip or startedUnmasked)
+        const isSlipping = character.currentState === 'slip' || character.currentState === 'cracking';
+        const isLeavingAfterSlip = character.currentState === 'leaving' && 
+            (character.willSlip || character.startedUnmasked);
         
-        if (isSlipping) {
+        if (isSlipping || isLeavingAfterSlip) {
             this.handleCorrectHit(character);
         } else {
             this.handleWrongHit(character);
@@ -280,6 +301,9 @@ export class GameScene extends Phaser.Scene {
     }
     
     handleCorrectHit(character) {
+        // Block any further hits on this character immediately
+        character.hitSuccessfully = true;
+        
         // Calculate score with combo multiplier
         const basePoints = GAME_CONFIG.scoring.correctHit * character.type.pointsModifier;
         const multiplier = this.getComboMultiplier();
@@ -317,7 +341,7 @@ export class GameScene extends Phaser.Scene {
         // Update HUD
         this.hud.updateScore(this.score);
         this.hud.updateCombo(this.combo);
-        this.hud.showPoints(character.hole.x, character.hole.y - 100, points);
+        this.hud.showPoints(character.hole.x, character.hole.y - 150, points);
         
         // Screen shake
         this.cameras.main.shake(100, 0.01);
@@ -334,6 +358,9 @@ export class GameScene extends Phaser.Scene {
         if (this.consecutiveWrongHits >= GAME_CONFIG.antiSpam.wrongHitsToTrigger) {
             this.triggerBlindFaithMode();
         }
+        
+        // Block further wrong hits on this character
+        character.wrongHitBlocked = true;
         
         // Visual and audio feedback
         this.showHitFeedback(character, false);

@@ -38,6 +38,11 @@ export const GAME_CONFIG = {
         maskDurationIncrease: 1.5 // Increase mask duration by 50%
     },
     
+    // Spawn behavior
+    spawnBehavior: {
+        unmaskedSpawnChance: 0.4 // 40% of characters spawn already unmasked
+    },
+    
     // Fonts
     FONTS: {
         primary: 'Birdman',
@@ -50,33 +55,33 @@ export const GAME_CONFIG = {
 export const DIFFICULTY_LEVELS = {
     easy: {
         name: 'Easy',
-        slipChance: 0.8,
-        slipDuration: 400,
+        slipChance: 0.9,
+        slipDuration: 450,
         maskDuration: { min: 1000, max: 1200 },
-        popupInterval: { min: 800, max: 1500 },
-        maxActiveCharacters: 3,
-        bossInterval: 50000, // 60 seconds
-        bossHitsRequired: 2
+        popupInterval: { min: 900, max: 1500 },
+        maxActiveCharacters: 4,
+        bossInterval: 10000, // 10 seconds
+        bossHitsRequired: 1
     },
     normal: {
         name: 'Normal',
-        slipChance: 0.6,
-        slipDuration: 350,
+        slipChance: 0.8,
+        slipDuration: 400,
         maskDuration: { min: 900, max: 1100 },
-        popupInterval: { min: 600, max: 1200 },
-        maxActiveCharacters: 4,
-        bossInterval: 45000,
-        bossHitsRequired: 3
+        popupInterval: { min: 800, max: 1300 },
+        maxActiveCharacters: 5,
+        bossInterval: 12000,
+        bossHitsRequired: 1
     },
     hard: {
         name: 'Hard',
-        slipChance: 0.5,
-        slipDuration: 250,
-        maskDuration: { min: 700, max: 900 },
-        popupInterval: { min: 500, max: 1000 },
-        maxActiveCharacters: 5,
-        bossInterval: 35000,
-        bossHitsRequired: 4
+        slipChance: 0.7,
+        slipDuration: 350,
+        maskDuration: { min: 800, max: 1000 },
+        popupInterval: { min: 700, max: 1100 },
+        maxActiveCharacters: 6,
+        bossInterval: 15000,
+        bossHitsRequired: 1
     }
 };
 
@@ -85,7 +90,7 @@ export const CHARACTER_TYPES = {
         id: 'preacher',
         name: 'The Preacher',
         description: 'Long mask, very fast slip',
-        maskDurationModifier: 1.3,
+        maskDurationModifier: 1.1,
         slipDurationModifier: 0.7,
         slipChanceModifier: 1.0,
         pointsModifier: 1.0,
@@ -98,14 +103,14 @@ export const CHARACTER_TYPES = {
         maskDurationModifier: 1.0,
         slipDurationModifier: 1.0,
         slipChanceModifier: 0.7,
-        pointsModifier: 1.5,
+        pointsModifier: 1.1,
         spriteKey: 'char_smiler'
     },
     shouter: {
         id: 'shouter',
         name: 'The Shouter',
         description: 'Loud audio bait',
-        maskDurationModifier: 0.8,
+        maskDurationModifier: 0.9,
         slipDurationModifier: 1.2,
         slipChanceModifier: 1.0,
         pointsModifier: 1.0,
@@ -116,7 +121,7 @@ export const CHARACTER_TYPES = {
         id: 'vanisher',
         name: 'The Vanisher',
         description: 'Short popup, high reward',
-        maskDurationModifier: 0.5,
+        maskDurationModifier: 0.8,
         slipDurationModifier: 0.8,
         slipChanceModifier: 0.9,
         pointsModifier: 2.0,
@@ -129,7 +134,7 @@ export const CHARACTER_TYPES = {
         maskDurationModifier: 1.2,
         slipDurationModifier: 1.0,
         slipChanceModifier: 0.0, // Only slips when triggered
-        pointsModifier: 1.5,
+        pointsModifier: 1.2,
         requiresTrigger: true,
         spriteKey: 'char_puppet'
     },
@@ -137,9 +142,9 @@ export const CHARACTER_TYPES = {
         id: 'boss',
         name: 'The Boss',
         description: 'Takes multiple hits to defeat',
-        maskDurationModifier: 2.0,
-        slipDurationModifier: 1.5,
-        slipChanceModifier: 1.0,
+        maskDurationModifier: 0.7,
+        slipDurationModifier: 1.2,
+        slipChanceModifier: 0.9,
         pointsModifier: 3.0,
         isBoss: true,
         spriteKey: 'char_boss'

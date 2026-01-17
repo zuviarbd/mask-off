@@ -16,21 +16,15 @@ export class Character {
         this.currentState = 'hidden'; // hidden, masked, cracking, slip, hit, leaving
         this.willSlip = false;
         this.bossHits = 0;
+        this.startedUnmasked = false; // For 40% of spawns that start unmasked
+        this.wrongHitBlocked = false; // Prevents repeated wrong hits on same character
+        this.hitSuccessfully = false; // Prevents clicks after a successful hit
         
         this.createSprite();
     }
     
     createSprite() {
-        // Try to use the character sprite, fallback to placeholder
-        const spriteKey = this.scene.textures.exists(this.type.spriteKey) 
-            ? this.type.spriteKey 
-            : null;
-        
-        // If no sprites exist, create a placeholder graphic
-        if (!spriteKey) {
-            this.createPlaceholderSprite();
-            return;
-        }
+        const spriteKey = this.type.spriteKey;
         
         // Position character below the hole (will animate up)
         this.sprite = this.scene.add.sprite(this.hole.x, this.hole.y + 150, spriteKey);
@@ -47,63 +41,15 @@ export class Character {
         }
     }
     
-    createPlaceholderSprite() {
-        // Create a simple placeholder character using graphics
-        const graphics = this.scene.add.graphics();
-        
-        // Body color based on character type
-        const colors = {
-            preacher: 0x8b5cf6,
-            smiler: 0xf59e0b,
-            shouter: 0xef4444,
-            vanisher: 0x06b6d4,
-            puppet: 0x84cc16,
-            boss: 0xe94560
-        };
-        
-        const color = colors[this.type.id] || 0x888888;
-        
-        // Draw character body
-        graphics.fillStyle(color, 1);
-        graphics.fillRoundedRect(-60, -100, 120, 160, 20);
-        
-        // Draw head
-        graphics.fillStyle(0xffd9b3, 1);
-        graphics.fillCircle(0, -130, 50);
-        
-        // Draw mask (white overlay on face)
-        graphics.fillStyle(0xffffff, 0.9);
-        graphics.fillRoundedRect(-35, -160, 70, 50, 10);
-        
-        // Eyes
-        graphics.fillStyle(0x000000, 1);
-        graphics.fillCircle(-15, -140, 6);
-        graphics.fillCircle(15, -140, 6);
-        
-        // Smile
-        graphics.lineStyle(2, 0x000000, 1);
-        graphics.beginPath();
-        graphics.arc(0, -130, 20, 0.2, Math.PI - 0.2);
-        graphics.stroke();
-        
-        // Generate texture from graphics
-        const key = `placeholder_${this.type.id}_${Date.now()}`;
-        graphics.generateTexture(key, 140, 220);
-        graphics.destroy();
-        
-        // Create sprite from generated texture
-        this.sprite = this.scene.add.sprite(this.hole.x, this.hole.y + 150, key);
-        this.sprite.setInteractive({ useHandCursor: true });
-        this.sprite.on('pointerdown', () => this.onClick());
-        
-        // Store reference for mask overlay
-        this.isPlaceholder = true;
-        this.placeholderColor = color;
-    }
-    
     spawn() {
         this.isActive = true;
-        this.currentState = 'masked';
+        
+        // Determine starting state based on startedUnmasked flag
+        if (this.startedUnmasked) {
+            this.currentState = 'slip';
+        } else {
+            this.currentState = 'masked';
+        }
         
         // Animate popping up
         this.scene.tweens.add({
@@ -112,7 +58,13 @@ export class Character {
             duration: 150,
             ease: 'Back.easeOut',
             onComplete: () => {
-                this.startStateTimer();
+                if (this.startedUnmasked) {
+                    // Already unmasked - show slip state and start timer
+                    this.showSlipState();
+                    this.startSlipTimer();
+                } else {
+                    this.startStateTimer();
+                }
             }
         });
         
@@ -155,9 +107,7 @@ export class Character {
         this.currentState = 'cracking';
         
         // Show mask cracking animation
-        if (this.isPlaceholder) {
-            this.showPlaceholderCrack();
-        } else if (this.scene.anims.exists(`${this.type.spriteKey}_crack`)) {
+        if (this.scene.anims.exists(`${this.type.spriteKey}_crack`)) {
             this.sprite.play(`${this.type.spriteKey}_crack`);
         }
         
@@ -174,16 +124,27 @@ export class Character {
     revealSlip() {
         this.currentState = 'slip';
         
-        // Show slip animation
-        if (this.isPlaceholder) {
-            this.showPlaceholderSlip();
-        } else if (this.scene.anims.exists(`${this.type.spriteKey}_slip`)) {
-            this.sprite.play(`${this.type.spriteKey}_slip`);
-        }
+        // Show slip state
+        this.showSlipState();
         
         // Show micro-expression icons
         this.showMicroExpressions();
         
+        // Start slip timer
+        this.startSlipTimer();
+    }
+    
+    showSlipState() {
+        // Show slip animation if available
+        if (this.scene.anims.exists(`${this.type.spriteKey}_slip`)) {
+            this.sprite.play(`${this.type.spriteKey}_slip`);
+        } else {
+            // Visual indicator for slip state - tint red
+            this.sprite.setTint(0xff6666);
+        }
+    }
+    
+    startSlipTimer() {
         // Calculate slip duration
         const duration = this.difficulty.slipDuration * this.type.slipDurationModifier;
         
@@ -192,35 +153,6 @@ export class Character {
             if (!this.isActive || this.currentState !== 'slip') return;
             this.leave();
         });
-    }
-    
-    showPlaceholderCrack() {
-        // Add crack lines overlay
-        if (this.crackOverlay) this.crackOverlay.destroy();
-        
-        const graphics = this.scene.add.graphics();
-        graphics.lineStyle(3, 0x333333, 1);
-        
-        // Random crack lines
-        graphics.moveTo(-20, -160);
-        graphics.lineTo(0, -140);
-        graphics.lineTo(20, -155);
-        graphics.stroke();
-        
-        this.crackOverlay = graphics;
-        this.crackOverlay.setPosition(this.sprite.x, this.sprite.y - 150);
-    }
-    
-    showPlaceholderSlip() {
-        // Change face to show "true nature"
-        // Tint the sprite red/angry
-        this.sprite.setTint(0xff6666);
-        
-        // Clean up crack overlay
-        if (this.crackOverlay) {
-            this.crackOverlay.destroy();
-            this.crackOverlay = null;
-        }
     }
     
     showMicroExpressions() {
@@ -248,6 +180,9 @@ export class Character {
     onClick() {
         if (!this.isActive || this.currentState === 'hidden' || this.currentState === 'hit') return;
         
+        // Check if wrong hit blocking is active or already hit successfully
+        if (this.wrongHitBlocked || this.hitSuccessfully) return;
+        
         this.scene.onCharacterClicked(this);
     }
     
@@ -255,10 +190,10 @@ export class Character {
         this.currentState = 'hit';
         
         // Play hit animation
-        if (!this.isPlaceholder && this.scene.anims.exists(`${this.type.spriteKey}_hit`)) {
+        if (this.scene.anims.exists(`${this.type.spriteKey}_hit`)) {
             this.sprite.play(`${this.type.spriteKey}_hit`);
         } else {
-            // Flash effect for placeholder
+            // Flash effect fallback
             this.scene.tweens.add({
                 targets: this.sprite,
                 alpha: 0.5,
@@ -333,7 +268,6 @@ export class Character {
         this.hole.character = null;
         
         if (this.sprite) this.sprite.destroy();
-        if (this.crackOverlay) this.crackOverlay.destroy();
     }
     
     update(time, delta) {
