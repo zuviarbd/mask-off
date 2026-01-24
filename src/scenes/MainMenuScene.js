@@ -265,7 +265,7 @@ export class MainMenuScene extends Phaser.Scene {
         // Transition effect
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
-            this.scene.start('GameScene');
+            this.scene.start('InstructionScene');
         });
     }
 }

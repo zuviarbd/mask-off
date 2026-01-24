@@ -6,7 +6,7 @@
 export const GAME_CONFIG = {
     // Game duration in seconds per round
     roundDuration: 60,
-    
+
     // Grid configuration
     grid: {
         rows: 3,
@@ -14,7 +14,7 @@ export const GAME_CONFIG = {
         holeSize: 180,
         holeSpacing: 20
     },
-    
+
     // Scoring
     scoring: {
         correctHit: 10,
@@ -22,14 +22,14 @@ export const GAME_CONFIG = {
         bossHit: 25,
         missedSlip: 0 // No penalty for missing
     },
-    
+
     // Combo system
     combo: {
         multipliers: [1, 1.2, 1.5, 2.0, 2.5, 3.0],
         thresholds: [0, 2, 4, 6, 8, 10],
         chainWindow: 2000 // ms to maintain chain
     },
-    
+
     // Anti-spam system
     antiSpam: {
         wrongHitsToTrigger: 3,
@@ -37,12 +37,12 @@ export const GAME_CONFIG = {
         slipReduction: 0.5, // Reduce slip chance by 50%
         maskDurationIncrease: 1.5 // Increase mask duration by 50%
     },
-    
+
     // Spawn behavior
     spawnBehavior: {
         unmaskedSpawnChance: 0.4 // 40% of characters spawn already unmasked
     },
-    
+
     // Fonts
     FONTS: {
         primary: 'Birdman',
