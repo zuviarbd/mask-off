@@ -62,7 +62,7 @@ export class GameOverScene extends Phaser.Scene {
         // Buttons
         // If Global Record, ask for name first
         if (this.isNewGlobalRecord) {
-            this.createNameInput(centerX, 780);
+            this.createNameInput(centerX, 1050);
         } else {
             this.createButtons(centerX, 750);
         }
@@ -287,9 +287,9 @@ export class GameOverScene extends Phaser.Scene {
         }
     }
     createNameInput(x, y) {
-        // Create an HTML input form - centered with fixed width
+        // Create an HTML input form - use CSS transform to center
         const element = this.add.dom(x, y).createFromHTML(`
-            <div style="background-color: rgba(0,0,0,0.85); padding: 20px; border-radius: 15px; text-align: center; border: 2px solid #ffd700; width: 300px; box-sizing: border-box;">
+            <div style="background-color: rgba(0,0,0,0.85); padding: 20px; border-radius: 15px; text-align: center; border: 2px solid #ffd700; width: 300px; box-sizing: border-box; transform: translateX(-100%); position: relative; left: 50%;">
                 <h3 style="color: #ffd700; margin: 0 0 15px 0; font-family: sans-serif;">🏆 NEW WORLD RECORD!</h3>
                 <input type="text" name="nameField" placeholder="Your Name" maxlength="40" style="font-size: 20px; padding: 10px; width: 260px; text-align: center; border-radius: 8px; border: none; outline: none; box-sizing: border-box;">
                 <br><br>
