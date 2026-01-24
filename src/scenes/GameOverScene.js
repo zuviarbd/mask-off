@@ -210,7 +210,7 @@ export class GameOverScene extends Phaser.Scene {
         
         // External Link - জাশির সেকাল একাল
         this.createButton(x, y + buttonSpacing * 3, '📚  জাশির সেকাল একাল', () => {
-            window.open('https://jamatshibir.com', '_blank');
+            window.location.href = 'https://jamatshibir.com';
         }, GAME_CONFIG.FONTS.bangla);
     }
     
@@ -287,13 +287,13 @@ export class GameOverScene extends Phaser.Scene {
         }
     }
     createNameInput(x, y) {
-        // Create an HTML input form
+        // Create an HTML input form - centered with fixed width
         const element = this.add.dom(x, y).createFromHTML(`
-            <div style="background-color: rgba(0,0,0,0.85); padding: 20px; border-radius: 15px; text-align: center; border: 2px solid #ffd700;">
+            <div style="background-color: rgba(0,0,0,0.85); padding: 20px; border-radius: 15px; text-align: center; border: 2px solid #ffd700; width: 300px; box-sizing: border-box;">
                 <h3 style="color: #ffd700; margin: 0 0 15px 0; font-family: sans-serif;">🏆 NEW WORLD RECORD!</h3>
-                <input type="text" name="nameField" placeholder="Your Name" maxlength="12" style="font-size: 24px; padding: 10px; width: 220px; text-align: center; border-radius: 8px; border: none; outline: none;">
+                <input type="text" name="nameField" placeholder="Your Name" maxlength="40" style="font-size: 20px; padding: 10px; width: 260px; text-align: center; border-radius: 8px; border: none; outline: none; box-sizing: border-box;">
                 <br><br>
-                <button name="submitBtn" style="font-size: 20px; font-weight: bold; padding: 10px 30px; cursor: pointer; background-color: #00ff00; border: none; border-radius: 8px; color: #003F15;">SUBMIT RECORD</button>
+                <button name="submitBtn" style="font-size: 18px; font-weight: bold; padding: 10px 25px; cursor: pointer; background-color: #00ff00; border: none; border-radius: 8px; color: #003F15;">SUBMIT RECORD</button>
             </div>
         `);
         
