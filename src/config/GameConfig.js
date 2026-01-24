@@ -5,7 +5,7 @@
 
 export const GAME_CONFIG = {
     // Game duration in seconds per round
-    roundDuration: 10,
+    roundDuration: 60,
 
     // Grid configuration
     grid: {
