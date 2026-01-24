@@ -14,8 +14,10 @@ const JSONBIN_API_URL = 'https://api.jsonbin.io/v3/b';
 // LocalStorage cache key
 const CACHE_KEY = 'maskoff_global_highscore_cache';
 
-if (!JSONBIN_API_KEY) {
-    console.error('[HighScoreService] No API Key found!');
+// Only warn about missing API key in development
+// In production, serverless functions handle API calls securely
+if (!JSONBIN_API_KEY && import.meta.env.DEV) {
+    console.error('[HighScoreService] No API Key found in .env file!');
 }
 
 /**
