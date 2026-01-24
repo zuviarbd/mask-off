@@ -44,7 +44,9 @@ export class BootScene extends Phaser.Scene {
     
     async fetchGlobalHighScore() {
         try {
-            const data = await fetchGlobalHighScore();
+            // Always fetch fresh data on game load to ensure we have the latest record
+            // forceRefresh=true bypasses localStorage cache
+            const data = await fetchGlobalHighScore(true);
             if (data) {
                 this.registry.set('globalHighScore', data.score || 0);
                 this.registry.set('globalHighScoreHolder', data.achievedBy || '');
