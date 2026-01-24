@@ -5,7 +5,7 @@
 
 export const GAME_CONFIG = {
     // Game duration in seconds per round
-    roundDuration: 60,
+    roundDuration: 10,
 
     // Grid configuration
     grid: {
@@ -152,37 +152,38 @@ export const CHARACTER_TYPES = {
 };
 
 // Rating thresholds based on performance
+// Requires BOTH minAccuracy AND minScorePercent of high score to achieve tier
 export const RATINGS = {
     blindBeliever: {
         id: 'blind_believer',
         name: 'মুখোশ উন্মোচক!',
         emoji: '😴',
         minAccuracy: 0,
-        maxAccuracy: 0.3,
+        minScorePercent: 0,  // No score requirement
         color: '#295242ff'
     },
     curious: {
         id: 'curious',
         name: 'মুনাফিক হান্টার!',
         emoji: '👀',
-        minAccuracy: 0.3,
-        maxAccuracy: 0.5,
+        minAccuracy: 0.4,    // 40% accuracy
+        minScorePercent: 0.3, // 30% of high score
         color: '#007afdff'
     },
     criticalThinker: {
         id: 'critical_thinker',
         name: 'মগবাজারের যম!',
         emoji: '🧠',
-        minAccuracy: 0.5,
-        maxAccuracy: 0.75,
+        minAccuracy: 0.6,    // 60% accuracy
+        minScorePercent: 0.6, // 60% of high score
         color: '#5849adff'
     },
     hypocrisyHunter: {
         id: 'hypocrisy_hunter',
         name: 'ছাগুশিকারী প্রো ম্যাক্স!',
         emoji: '🎯',
-        minAccuracy: 0.75,
-        maxAccuracy: 1.0,
+        minAccuracy: 0.75,   // 75% accuracy
+        minScorePercent: 0.85, // 85% of high score
         color: '#e2193bff'
     }
 };

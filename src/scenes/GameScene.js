@@ -6,7 +6,7 @@ import Phaser from 'phaser';
 import { GAME_CONFIG, DIFFICULTY_LEVELS, CHARACTER_TYPES } from '../config/GameConfig.js';
 import { Character } from '../objects/Character.js';
 import { HUD } from '../objects/HUD.js';
-import { updateGlobalHighScore } from '../services/HighScoreService.js';
+
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -505,13 +505,7 @@ export class GameScene extends Phaser.Scene {
             }
         }
         
-        // Check if this beats the global record - update jsonbin.io
-        if (isNewGlobalRecord) {
-            this.registry.set('globalHighScore', this.score);
-            // Update jsonbin.io with new global record
-            updateGlobalHighScore(this.score);
-            console.log(`🏆 NEW GLOBAL RECORD: ${this.score} - Sent to jsonbin.io`);
-        }
+        // Check if this beats the global record - name input will be shown in GameOverScene
         
         // Transition to game over
         this.cameras.main.fadeOut(1000, 0, 0, 0);

@@ -32,13 +32,13 @@ export class MainMenuScene extends Phaser.Scene {
         this.add.text(centerX, 200, `- YOUR HIGH SCORE -`, {
             fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '18px',
-            color: '#ffffff'
+            color: '#ffffffff'
         }).setOrigin(0.5);
         const highScore = this.registry.get('highScore') || 0;
         this.add.text(centerX, 235, `${highScore}`, {
             fontFamily: GAME_CONFIG.FONTS.numbers,
             fontSize: '42px',
-            color: '#ffff00'
+            color: '#ffff00ff'
         }).setOrigin(0.5);
         
         // Global High Score display
@@ -46,13 +46,26 @@ export class MainMenuScene extends Phaser.Scene {
         this.add.text(centerX, 290, `- GLOBAL RECORD -`, {
             fontFamily: GAME_CONFIG.FONTS.primary,
             fontSize: '16px',
-            color: '#dedede'
+            color: '#ffffffff'
         }).setOrigin(0.5);
         this.add.text(centerX, 320, `${globalHighScore}`, {
             fontFamily: GAME_CONFIG.FONTS.numbers,
             fontSize: '36px',
             color: '#00ffff'
         }).setOrigin(0.5);
+        
+        // Only show holder name if someone has set a record
+        const globalHighScoreHolder = this.registry.get('globalHighScoreHolder');
+        if (globalHighScoreHolder) {
+            this.add.text(centerX, 360, `By: ${globalHighScoreHolder}`, {
+                fontFamily: GAME_CONFIG.FONTS.primary,
+                fontSize: '20px',
+                color: '#ffffffff',
+                stroke: '#000000ff',
+                strokeThickness: 10,
+                fontStyle: 'italic'
+            }).setOrigin(0.5);
+        }
 
         
         // Difficulty buttons

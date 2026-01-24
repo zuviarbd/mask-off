@@ -3,6 +3,7 @@
  * First scene - sets up basic system config and loads minimal assets for preloader
  */
 import Phaser from 'phaser';
+import { fetchGlobalHighScore } from '../services/HighScoreService.js';
 
 export class BootScene extends Phaser.Scene {
     constructor() {
@@ -21,6 +22,7 @@ export class BootScene extends Phaser.Scene {
         this.registry.set('score', 0);
         this.registry.set('highScore', this.getHighScore());
         this.registry.set('globalHighScore', 0);
+        this.registry.set('globalHighScoreHolder', '');
         this.registry.set('difficulty', 'normal');
         this.registry.set('soundEnabled', true);
         this.registry.set('musicEnabled', true);
@@ -42,13 +44,13 @@ export class BootScene extends Phaser.Scene {
     
     async fetchGlobalHighScore() {
         try {
-            const response = await fetch('/data/highscore.json');
-            if (response.ok) {
-                const data = await response.json();
-                this.registry.set('globalHighScore', data.globalHighScore || 0);
+            const data = await fetchGlobalHighScore();
+            if (data) {
+                this.registry.set('globalHighScore', data.score || 0);
+                this.registry.set('globalHighScoreHolder', data.achievedBy || '');
             }
         } catch (e) {
-            console.log('Could not fetch global high score:', e);
+            // Silent fail - cache/fallback will be used
         }
     }
 }

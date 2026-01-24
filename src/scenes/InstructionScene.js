@@ -7,12 +7,12 @@ import { GAME_CONFIG, CHARACTER_TYPES } from '../config/GameConfig.js';
 
 // Bangla Name Mapping
 const CHARACTER_NAMES_BN = {
-    preacher: 'সাধুবাবা',
-    smiler: 'জোকার',
-    shouter: 'গলাবাজ',
-    vanisher: 'সুগারমাম্মী',
-    puppet: 'পুতুলবাবা',
-    boss: 'রামছাগল'
+    preacher: 'সান্ডার-শিশি',
+    smiler: 'গুপ্ত-ডিক',
+    shouter: 'টারজান-বয়',
+    vanisher: 'কটকটি-আন্টি',
+    puppet: 'ফরফর-বাজ',
+    boss: 'দাঁতাল-উকিল'
 };
 
 export class InstructionScene extends Phaser.Scene {

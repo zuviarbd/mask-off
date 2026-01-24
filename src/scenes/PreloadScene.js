@@ -156,7 +156,6 @@ export class PreloadScene extends Phaser.Scene {
     createPlaceholder(file) {
         // This will be called if any asset fails to load
         // The game will still run with generated placeholders
-        console.log(`Creating placeholder for: ${file.key}`);
     }
 
     create() {

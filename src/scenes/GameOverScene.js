@@ -4,6 +4,7 @@
  */
 import Phaser from 'phaser';
 import { RATINGS, GAME_CONFIG } from '../config/GameConfig.js';
+import { updateGlobalHighScore } from '../services/HighScoreService.js';
 
 export class GameOverScene extends Phaser.Scene {
     constructor() {
@@ -18,6 +19,7 @@ export class GameOverScene extends Phaser.Scene {
         this.accuracy = data.accuracy || 0;
         this.bossesDefeated = data.bossesDefeated || 0;
         this.isNewHighScore = data.isNewHighScore || false;
+        this.isNewGlobalRecord = data.isNewGlobalRecord || false;
     }
 
     create() {
@@ -52,13 +54,18 @@ export class GameOverScene extends Phaser.Scene {
         
         // Rating
         const rating = this.getRating();
-        this.createRatingDisplay(centerX, 400, rating);
+        this.createRatingDisplay(centerX, 350, rating);
         
         // Stats breakdown
-        this.createStatsBreakdown(centerX, 600);
+        this.createStatsBreakdown(centerX, 520);
         
         // Buttons
-        this.createButtons(centerX, height - 400);
+        // If Global Record, ask for name first
+        if (this.isNewGlobalRecord) {
+            this.createNameInput(centerX, 780);
+        } else {
+            this.createButtons(centerX, 750);
+        }
         
         // Fact mode disclaimer
         this.add.text(centerX, height - 50, '"বিশ্বাস করার আগে যাচাই করুন।"', {
@@ -86,16 +93,28 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     getRating() {
-        // Find appropriate rating based on accuracy
-        for (const key of ['hypocrisyHunter', 'criticalThinker', 'curious', 'blindBeliever']) {
+        // Get high score for comparison (use personal or global, whichever is higher)
+        const personalHighScore = this.registry.get('highScore') || 0;
+        const globalHighScore = this.registry.get('globalHighScore') || 0;
+        const referenceHighScore = Math.max(personalHighScore, globalHighScore, 1); // Min 1 to avoid division by zero
+        
+        // Calculate score percentage (capped at 100%)
+        const scorePercent = Math.min(this.finalScore / referenceHighScore, 1);
+        
+        // Check tiers from highest to lowest - must meet BOTH thresholds
+        const tiers = ['hypocrisyHunter', 'criticalThinker', 'curious', 'blindBeliever'];
+        
+        for (const key of tiers) {
             const rating = RATINGS[key];
-            if (this.accuracy >= rating.minAccuracy && this.accuracy < rating.maxAccuracy) {
-                return rating;
-            }
-            if (this.accuracy >= rating.maxAccuracy && key === 'hypocrisyHunter') {
+            const meetsAccuracy = this.accuracy >= rating.minAccuracy;
+            const meetsScore = scorePercent >= rating.minScorePercent;
+            
+            if (meetsAccuracy && meetsScore) {
                 return rating;
             }
         }
+        
+        // Fallback (should never reach here due to blindBeliever having 0/0 thresholds)
         return RATINGS.blindBeliever;
     }
     
@@ -142,10 +161,10 @@ export class GameOverScene extends Phaser.Scene {
     
     createStatsBreakdown(x, y) {
         const stats = [
-            { label: 'Chagu Exposed', value: this.correctHits },
+            { label: 'Correct Hit', value: this.correctHits },
             { label: 'Wrong Hit', value: this.wrongHits },
             { label: 'Best Combo', value: this.maxCombo },
-            { label: 'Boss Defeated', value: this.bossesDefeated },
+            { label: 'Monster Hit', value: this.bossesDefeated },
             { label: 'Accuracy', value: `${Math.round(this.accuracy * 100)}%` }
         ];
         
@@ -172,7 +191,7 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     createButtons(x, y) {
-        const buttonSpacing = 70;
+        const buttonSpacing = 60;
         
         // Play Again
         this.createButton(x, y, '🔁  Play Again', () => {
@@ -188,9 +207,14 @@ export class GameOverScene extends Phaser.Scene {
         this.createButton(x, y + buttonSpacing * 2, '📊  Share Result', () => {
             this.shareResult();
         });
+        
+        // External Link - জাশির সেকাল একাল
+        this.createButton(x, y + buttonSpacing * 3, '📚  জাশির সেকাল একাল', () => {
+            window.open('https://jamatshibir.com', '_blank');
+        }, GAME_CONFIG.FONTS.bangla);
     }
     
-    createButton(x, y, text, callback) {
+    createButton(x, y, text, callback, fontFamily = GAME_CONFIG.FONTS.primary) {
         const button = this.add.rectangle(x, y, 280, 50, 0x003F15)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
@@ -205,9 +229,10 @@ export class GameOverScene extends Phaser.Scene {
             });
         
         this.add.text(x, y, text, {
-            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontFamily: fontFamily,
             fontSize: '20px',
-            color: '#ffffff'
+            color: '#ffffff',
+            padding: { top: 4, bottom: 4 }
         }).setOrigin(0.5);
     }
     
@@ -260,5 +285,75 @@ export class GameOverScene extends Phaser.Scene {
         if (this.cache.audio.exists('sfx_button')) {
             this.sound.play('sfx_button', { volume: 0.5 });
         }
+    }
+    createNameInput(x, y) {
+        // Create an HTML input form
+        const element = this.add.dom(x, y).createFromHTML(`
+            <div style="background-color: rgba(0,0,0,0.85); padding: 20px; border-radius: 15px; text-align: center; border: 2px solid #ffd700;">
+                <h3 style="color: #ffd700; margin: 0 0 15px 0; font-family: sans-serif;">🏆 NEW WORLD RECORD!</h3>
+                <input type="text" name="nameField" placeholder="Your Name" maxlength="12" style="font-size: 24px; padding: 10px; width: 220px; text-align: center; border-radius: 8px; border: none; outline: none;">
+                <br><br>
+                <button name="submitBtn" style="font-size: 20px; font-weight: bold; padding: 10px 30px; cursor: pointer; background-color: #00ff00; border: none; border-radius: 8px; color: #003F15;">SUBMIT RECORD</button>
+            </div>
+        `);
+        
+        element.addListener('click');
+        
+        element.on('click', async (event) => {
+            if (event.target.name === 'submitBtn') {
+                const input = element.getChildByName('nameField');
+                const name = input.value.trim();
+                
+                if (name.length > 0) {
+                    // Disable input
+                    input.disabled = true;
+                    event.target.textContent = 'SENDING...';
+                    event.target.style.backgroundColor = '#cccccc';
+                    
+                    // Send to server
+                    const success = await updateGlobalHighScore(this.finalScore, name);
+                    
+                    if (success) {
+                        // Update registry
+                        this.registry.set('globalHighScore', this.finalScore);
+                        this.registry.set('globalHighScoreHolder', name);
+                        
+                        // Show success
+                        element.destroy();
+                        this.showSubmissionSuccess(x, y, name);
+                    } else {
+                        // Show error
+                        event.target.textContent = 'RETRY';
+                        event.target.style.backgroundColor = '#ff0000';
+                        input.disabled = false;
+                    }
+                }
+            }
+        });
+        
+        this.tweens.add({
+            targets: element,
+            y: y - 10,
+            duration: 1000,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+        });
+    }
+    
+    showSubmissionSuccess(x, y, name) {
+        this.add.text(x, y, `High Score Recorded!\n${name}`, {
+            fontFamily: GAME_CONFIG.FONTS.primary,
+            fontSize: '24px',
+            color: '#00ff00',
+            align: 'center',
+            stroke: '#000000',
+            strokeThickness: 4
+        }).setOrigin(0.5);
+        
+        // Show normal buttons after delay
+        this.time.delayedCall(1500, () => {
+             this.createButtons(this.cameras.main.width / 2, 900);
+        });
     }
 }

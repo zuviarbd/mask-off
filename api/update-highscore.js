@@ -11,15 +11,16 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
     
-    const { score } = req.body;
+    const { score, achievedBy } = req.body;
     
     if (typeof score !== 'number' || score < 0) {
         return res.status(400).json({ error: 'Invalid score' });
     }
     
     // API key is safely stored in Vercel environment variables (no VITE_ prefix)
-    const JSONBIN_BIN_ID = process.env.JSONBIN_BIN_ID;
-    const JSONBIN_API_KEY = process.env.JSONBIN_API_KEY;
+    // Also check VITE_ prefix for local development compatibility
+    const JSONBIN_BIN_ID = process.env.JSONBIN_BIN_ID || process.env.VITE_JSONBIN_BIN_ID;
+    const JSONBIN_API_KEY = process.env.JSONBIN_X_ACCESS_KEY || process.env.VITE_JSONBIN_X_Access_Key;
     
     if (!JSONBIN_BIN_ID || !JSONBIN_API_KEY) {
         return res.status(500).json({ error: 'Server configuration missing' });
@@ -34,6 +35,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({
                 globalHighScore: score,
+                achievedBy: achievedBy || 'Anonymous',
                 achievedAt: new Date().toISOString(),
                 gameVersion: '1.0.0'
             })

@@ -49,6 +49,9 @@ const config = {
     render: {
         pixelArt: false,
         antialias: true
+    },
+    dom: {
+        createContainer: true
     }
 };
 
